@@ -1,1 +1,1 @@
-Starker Schutz f�r den bewaffneten Zweikampf. An- und Ablegen durch Doppelklick auf Graben.
+Starker Schutz für den bewaffneten Zweikampf. Anlegen via doppelgraben und über das Spezialmenü, ablegen ausschließlich über dieses.
