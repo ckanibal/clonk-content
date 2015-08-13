@@ -248,7 +248,7 @@ protected func ControlLeft(object controller)        // links
 
 protected func ControlCommand(string szCommand,object pTarget,int iX,int iY)
 {
-  // Pilot läßt los
+  // Pilot lÃ¤ÃŸt los
   if (szCommand S= "UnGrab")
     return(0,ClearCommand(),NoPilotCheck());
   // Bewegungskommando vom Piloten
@@ -267,7 +267,7 @@ protected func Initialize()
   FloatIdleDown();
 }
 
-/* Aktivität */
+/* AktivitÃ¤t */
 
 protected func FxIntWindXDirTimer()
 {
@@ -309,7 +309,7 @@ private func FlightProcess()
 
 private func CheckCommandAction()
 {
-  // Propeller an für Kommando
+  // Propeller an fÃ¼r Kommando
   if (GetCommand()) 
     if (GetAction()S="FloatIdle") 
       SetAction("FloatPropel");
@@ -352,20 +352,20 @@ protected func RejectCollect(id idObject, object pObj)
   // Pfeile vertragen sich nicht mit einem Luftschiff
   if (DefinitionCall(idObject,"IsArrow") )
    // Nur, wenn der Pfeil sich auch bewegt
-   if(GetXDir(pObj) || GetYDir(pObj))
+   if((GetXDir(pObj) || GetYDir(pObj)) && (GetAction(pObj)=="Shot" || GetAction(pObj)=="Stick"))
   {
-    // bei brennendem Pfeil anzünden
+    // bei brennendem Pfeil anzÃ¼nden
     if(OnFire(pObj)) Incinerate();
-    // ansonsten abstürzen
+    // ansonsten abstÃ¼rzen
     else SetAction("DropOff");
-    // in jedem Fall im Pfeil Hit auslösen (Sprengpfeil explodiert zB)
+    // in jedem Fall im Pfeil Hit auslÃ¶sen (Sprengpfeil explodiert zB)
     ProtectedCall(pObj, "Hit");
     return(1);
   }
   return(1);
 }
 
-/* Angriff durch Vögel */
+/* Angriff durch VÃ¶gel */
 
 public func Poke()
 {
