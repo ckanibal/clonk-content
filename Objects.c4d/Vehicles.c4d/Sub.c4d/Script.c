@@ -108,7 +108,7 @@ protected func ContainedLeft(object clonk)
   return(1);
 }
 
-protected func ContainedUpDouble(object pByObject)
+protected func ContextExitSubmarine(object pByObject)
 {
   [$TxtExit$|Image=SSY1:5]
   OpenAirlock();
