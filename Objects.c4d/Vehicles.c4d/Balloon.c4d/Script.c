@@ -79,7 +79,7 @@ public func SetDirection(int comdir)
 
 protected func ControlCommand(string szCommand, object pTarget, int iX, int iY)
 {
-  // Pilot läßt los
+  // Pilot lÃ¤ÃŸt los
   if(szCommand eq "UnGrab")
     return(0,ClearCommand());
   // Bewegungskommando vom Piloten
@@ -101,7 +101,7 @@ protected func Initialize()
   SetComDir(COMD_Down());
 }
 
-/* Aktivität */
+/* AktivitÃ¤t */
 
 protected func Wind2Flag() { SetDir(BoundBy(GetWind()/10+4,0,8)); }
 
@@ -155,14 +155,13 @@ protected func RejectCollect(id idObject, object pObj)
   // Pfeile vertragen sich nicht mit einem Ballon
   if (DefinitionCall(idObject,"IsArrow"))
    // Nur, wenn der Pfeil sich auch bewegt
-   if(GetXDir(pObj) || GetYDir(pObj))
+   if((GetXDir(pObj) || GetYDir(pObj)) && (GetAction(pObj)=="Shot" || GetAction(pObj)=="Stick"))
   {
-    // bei brennendem Pfeil anzünden
+    // bei brennendem Pfeil anzÃ¼nden
     if(OnFire(pObj)) Incinerate();
-    // ansonsten abstürzen
+    // ansonsten abstÃ¼rzen
     else SetAction("DropOff");
-    // in jedem Fall im Pfeil Hit auslösen (Sprengpfeil explodiert zB)
-    ProtectedCall(pObj, "Hit");
+    // in jedem Fall im Pfeil Hit auslÃ¶sen (Sprengpfeil explodiert zB)
     return(1);
   }
   return(1);
@@ -171,11 +170,11 @@ protected func RejectCollect(id idObject, object pObj)
 protected func Collection(object pObj)
   {
   var idObj = GetID(pObj);
-  // bei brennendem Pfeil anzünden
+  // bei brennendem Pfeil anzÃ¼nden
   if(OnFire(pObj)) Incinerate();
-  // ansonsten abstürzen
+  // ansonsten abstÃ¼rzen
   else SetAction("DropOff");
-  // in jedem Fall im Pfeil Hit auslösen (Sprengpfeil explodiert zB)
+  // in jedem Fall im Pfeil Hit auslÃ¶sen (Sprengpfeil explodiert zB)
   ProtectedCall(pObj, "Hit");
   return(1);
   }
