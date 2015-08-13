@@ -8,7 +8,9 @@ public func Activate(pClonk)
   [$CtrlActivateDesc$|Condition=ShowInContextMenu]
   // Der Clonk kann dieses Objekt nicht verwenden
   if (!pClonk->~CanUse(GetID())) return(0);
-  // Träger nicht bereit zum neuen Zielen
+  // Bogen nicht komplett
+  if (GetCon()!=100) return(0);
+  // TrÃ¤ger nicht bereit zum neuen Zielen
   if (!pClonk->~ReadyToFire())
   {
     if(pClonk->GetProcedure() ne "SCALE") return(0);
@@ -18,7 +20,7 @@ public func Activate(pClonk)
     else
       return(0);
   }
-  // Träger: neue Zielaktion setzen
+  // TrÃ¤ger: neue Zielaktion setzen
   if (!pClonk->~LoadBow(1))
   {
     if (!pClonk->~AimBow()) 
@@ -29,10 +31,10 @@ public func Activate(pClonk)
   return(1);
 }
 
-/* Spezialsteuerung durch Träger */
+/* Spezialsteuerung durch TrÃ¤ger */
 public func ControlThrow(pClonk)
 {
-  // Träger hat gezielt
+  // TrÃ¤ger hat gezielt
   if (IsAiming())
     { Fire(pClonk); return(1); }
   // Bogen einsetzen
@@ -82,7 +84,7 @@ public func ControlUpdate(pClonk, int comdir)
 
 public func ControlLeft(pClonk)
 {
-  // Träger Zielaktion
+  // TrÃ¤ger Zielaktion
   if (IsAiming())
   {
     SetDir(DIR_Left(), pClonk);
@@ -94,7 +96,7 @@ public func ControlLeft(pClonk)
 
 public func ControlRight(pClonk)
 {
-  // Träger Zielaktion
+  // TrÃ¤ger Zielaktion
   if (IsAiming())
   {
     SetDir(DIR_Right(), pClonk);
@@ -128,14 +130,14 @@ public func ControlLeftDouble(pClonk)
   return(0);
 }
 
-/* Wird gerade vom Träger gezielt? */
+/* Wird gerade vom TrÃ¤ger gezielt? */
 public func IsAiming() 
 { 
   if(!Contained()) return(false);
     return (Contained()->~IsAiming()); 
 }
 
-/* Hardgecodet, für alte Ritter */
+/* Hardgecodet, fÃ¼r alte Ritter */
 private func GetBowOutOld(pClonk, &iOutX, &iOutY, &iOutR, &iOutXDir, &iOutYDir, &iOutRDir)
 {
   var iOutDir; if (GetDir(pClonk) == DIR_Left()) iOutDir=-1; else iOutDir=1;
@@ -150,7 +152,7 @@ private func GetBowOutOld(pClonk, &iOutX, &iOutY, &iOutR, &iOutXDir, &iOutYDir, 
   iOutXDir = iOutDir*iOutPhase*3+2;
   // YDir
   if (iOutPhase == 5) iOutYDir=10; else iOutYDir = (iOutPhase-3)*3;
-  // Größerer Abstand
+  // GrÃ¶ÃŸerer Abstand
   iOutX += iOutXDir*2;
   iOutY += iOutYDir*2;
   // RDir
@@ -177,18 +179,18 @@ public func GetBowOutAngle(pClonk, iAngle, fDeviate, &iOutX, &iOutY, &iOutR, &iO
 public func Fire()
 {
   var pClonk = Contained();
-  // Kein Träger?
+  // Kein TrÃ¤ger?
   if(!pClonk) return(0);
-  // Im Gebäude?
+  // Im GebÃ¤ude?
   if (pClonk->Contained()) { pClonk->~StopAiming(); return(0); }
-  // Unvollständig?
+  // UnvollstÃ¤ndig?
   if (~GetOCF() & OCF_Fullcon()) return(0);
   // Noch beim Nachladen
   if (GetAction() eq "Reload") return(0);
-  // Pfeil vom Träger holen
+  // Pfeil vom TrÃ¤ger holen
   var pArrow = pClonk->~GetArrow();
   if (!pArrow) return(0);
-  // Beim Träger ggf. Bogen wieder auswählen
+  // Beim TrÃ¤ger ggf. Bogen wieder auswÃ¤hlen
   ShiftContents(pClonk, 0, BOW1);
   // Austrittsgeschwindigkeit ermitteln
   var iAngle = pClonk->~GetBowAimAngle();
@@ -217,18 +219,18 @@ public func Fire()
 public func FireAngle(iAngle)
 {
   var pClonk = Contained();
-  // Kein Träger?
+  // Kein TrÃ¤ger?
   if(!pClonk) return(0);
-  // Im Gebäude?
+  // Im GebÃ¤ude?
   if (pClonk->Contained()) { pClonk->~StopAiming(); return(0); }
-  // Unvollständig?
+  // UnvollstÃ¤ndig?
   if (~GetOCF() & OCF_Fullcon()) return(0);
   // Noch beim Nachladen
   if (GetAction() eq "Reload") return(0);
-  // Pfeil vom Träger holen
+  // Pfeil vom TrÃ¤ger holen
   var pArrow = Contained()->~GetArrow();
   if (!pArrow) return();
-  // Beim Träger ggf. Bogen wieder auswählen
+  // Beim TrÃ¤ger ggf. Bogen wieder auswÃ¤hlen
   ShiftContents(Contained(), 0, BOW1);
   // Austrittsgeschwindigkeit ermitteln
   var iOutX, iOutY, iOutR, iOutXDir, iOutYDir, iOutRDir;
@@ -249,11 +251,11 @@ public func FireAngle(iAngle)
 }
 
 
-/* Anzünden: Verbrannte Aktion zur Markierung, dass er unbenutzbar ist */
+/* AnzÃ¼nden: Verbrannte Aktion zur Markierung, dass er unbenutzbar ist */
 
 protected func Incineration()
  {
-  //Einfärben für Menüs
+  //EinfÃ¤rben fÃ¼r MenÃ¼s
   SetClrModulation(RGB(50,50,50),this());
   SetAction("Burned");
   return(1);
